@@ -7,6 +7,6 @@
 */.idea/*
 **/.vscode/*
 **/out/
-**/logs/
+**/logs/*
 corda-nodeinfo/corda-nodeinfo.iml
 *~*
