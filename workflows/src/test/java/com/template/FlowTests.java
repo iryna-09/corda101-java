@@ -22,10 +22,11 @@ public class FlowTests {
         network = new MockNetwork(
                 new MockNetworkParameters(
                         Collections.singletonList(TestCordapp.findCordapp("com.template.flows"))
-                ).withThreadPerNode(true)
+                )
         );
         nodeA = network.createPartyNode(null);
         nodeB = network.createPartyNode(null);
+        network.runNetwork();
     }
     @After
     public void tearDown() {
@@ -35,6 +36,7 @@ public class FlowTests {
     public void pingFlowTest() {
         PingFlow flow1 = new PingFlow(nodeB.getInfo().getLegalIdentities().get(0));
         CordaFuture<String> futureA = nodeA.startFlow(flow1);
+        network.runNetwork();//cleans up pending messages in message queues from send/receive flows
     }
     @Test
     public void sleepyFlowTest() {

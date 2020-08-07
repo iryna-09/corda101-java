@@ -15,10 +15,8 @@ import org.slf4j.LoggerFactory;
 @InitiatedBy(PingFlow.class)
 public class PongFlow extends FlowLogic<String> {
     private FlowSession session;
-    Logger logger;
 
     public PongFlow(FlowSession session) {
-        logger = LoggerFactory.getLogger(InitiatedBy.class);
 
         this.session = session;
     }
@@ -26,23 +24,16 @@ public class PongFlow extends FlowLogic<String> {
     @Suspendable
     @Override
     public String call() throws FlowException {
-        logger.info("from pong flow1");
 
-        UntrustworthyData<String> ping = session.receive(String.class);
-        logger.info("from pong flow2");
-
-        String s = ping.unwrap(message -> {
-            assert(message.equals("ping"));
-            logger.info("hello");
-            System.out.println(message);
-            return message;
-        });
-        logger.info("hello1");
-        session.send("pong");
-
-//        String s = session.receive(String.class).unwrap(it -> it);
-//        System.out.println(s);
+//        UntrustworthyData<String> ping = session.receive(String.class);
+//        String s = ping.unwrap(message -> {
+//            assert(message.equals("ping"));
+//            return message;
+//        });
 //        session.send("pong");
+
+        String s = session.receive(String.class).unwrap(it -> it);
+        session.send("pong");
 
         return s;
     }

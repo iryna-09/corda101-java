@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 @StartableByRPC
 public class PingFlow extends FlowLogic<String> {
-    Logger logger = LoggerFactory.getLogger(PingFlow.class);
 
     private final Party recipient ;
 
@@ -29,21 +28,17 @@ public class PingFlow extends FlowLogic<String> {
     public String call() throws FlowException {
 
       final FlowSession recipientSession = initiateFlow(recipient);
-       logger.info("from ping flow");
 
-
-      final UntrustworthyData<String> recipientData = recipientSession.sendAndReceive(String.class, "ping");
-      return recipientData.unwrap( response -> {
-          assert(response.equals("pong"));
-          System.out.print("pong");
-          logger.info("woooo");
-          return response;
-      });
+//      final UntrustworthyData<String> recipientData = recipientSession.sendAndReceive(String.class, "ping");
+//      return recipientData.unwrap( response -> {
+//          assert(response.equals("pong"));
+//          return response;
+//      });
 
     //  return recipientSession.sendAndReceive(String.class,"ping").unwrap((it->it));
 
-//      recipientSession.send("ping");
-//      return recipientSession.receive(String.class).unwrap(it -> it);
+      recipientSession.send("ping");
+      return recipientSession.receive(String.class).unwrap(it -> it);
     }
 }
 
